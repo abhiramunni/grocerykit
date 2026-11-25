@@ -478,3 +478,59 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding:26px 0 40px}
       <p style="margin-top:8px"><strong style="color:var(--ink)">Prices are indicative.</strong> They were checked at Bengaluru stores in November 2026 and will move with the market — vegetables most of all. The price on your shop's shelf is the one that counts. GroceryKit is a planner, not a shop: it sells nothing and takes no orders.</p>
       <p style="margin-top:8px">Everything you enter stays in this browser on your device. No account, no uploads, no tracking.</p>
     </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn ghost" type="button" id="removeSamplesBtn">Remove samples</button>
+      <button class="btn ghost" type="button" id="eraseAllBtn">Erase everything</button>
+    </div>
+  </div>
+</footer>
+
+<!-- detail sheet -->
+<div class="sheet-bg" id="sheetBg" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet">
+    <button class="x" type="button" id="sheetClose" aria-label="Close">×</button>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- onboarding coach -->
+<div class="coach" id="coach" role="dialog" aria-label="Quick tour">
+  <h3 id="coachTitle"></h3>
+  <p id="coachText"></p>
+  <div class="row">
+    <span class="dots" id="coachDots"></span>
+    <button class="btn ghost" type="button" id="coachSkip" style="border-color:rgba(247,234,210,.4);color:#f7ead2">Skip tour</button>
+    <button class="btn terra" type="button" id="coachNext">Next</button>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px;text-align:center">GroceryKit needs JavaScript to price your basket. Please enable it and reload.</p></noscript>
+<script>
+'use strict';
+/* ================= GroceryKit ================= */
+var LS_KEY='grocerykit-v1';
+function $(s){return document.querySelector(s)}
+function $$(s){return Array.prototype.slice.call(document.querySelectorAll(s))}
+function safeScroll(el){try{if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function inr(n){return '₹'+Math.round(n).toLocaleString('en-IN')}
+function fmtQty(q){return (Math.round(q*100)/100)%1===0?String(Math.round(q*100)/100):String(Math.round(q*100)/100)}
+function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(function(){t.classList.remove('show')},2600)}
+
+/* ---- aisles ---- */
+var AISLES=[
+ {id:'veg',name:'Vegetables',tag:'Fresh every morning'},
+ {id:'fruit',name:'Fruits',tag:'Sweet, by the kilo'},
+ {id:'dairy',name:'Dairy & Eggs',tag:'Fridge things'},
+ {id:'staples',name:'Rice & Staples',tag:'The big bags'},
+ {id:'spices',name:'Spices & Masala',tag:'Small packs, big flavour'},
+ {id:'household',name:'Household',tag:'Not food, still weekly'}
+];
+function aisleById(id){for(var i=0;i<AISLES.length;i++)if(AISLES[i].id===id)return AISLES[i];return null}
+
+/* ---- catalogue: indicative prices, Bengaluru, November 2026 ----
+   d = DMart, b = BigBasket, k = Local Kirana. qty = seed basket qty. */
+var ITEMS=[
+ {id:'onion',name:'Onion',unit:'kg',aisle:'veg',d:34,b:38,k:32,qty:2,step:0.5},
+ {id:'tomato',name:'Tomato',unit:'kg',aisle:'veg',d:28,b:32,k:26,qty:1.5,step:0.5},
