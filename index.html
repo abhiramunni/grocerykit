@@ -799,3 +799,35 @@ function renderWatch(){
 function renderSpend(){
   var t=totals();
   var bars=SPEND.map(function(s){return {label:s.label,amt:s.amt,proj:false}});
+  bars.push({label:'This week · '+storeById(state.store).name,amt:Math.round(t[state.store]),proj:true});
+  var mx=Math.max.apply(null,bars.map(function(b){return b.amt}));
+  $('#spendBars').innerHTML=bars.map(function(b){
+    var h=Math.max(6,Math.round(b.amt/mx*140));
+    return '<div class="sbar'+(b.proj?' proj':'')+'"><span class="val">'+inr(b.amt)+'</span><div class="bar" style="height:'+h+'px"></div><span class="lab">'+esc(b.label)+'</span></div>';
+  }).join('');
+  var avg=Math.round((SPEND[0].amt+SPEND[1].amt+SPEND[2].amt)/3);
+  var diff=Math.round(t[state.store])-avg;
+  var dirTxt=diff>0?inr(diff)+' above':inr(-diff)+' below';
+  $('#spendNote').textContent='Three-week average: '+inr(avg)+'. This week at '+storeById(state.store).name+' is projected at '+inr(t[state.store])+' — '+dirTxt+' the average. The cheapest store this week is '+storeById(cheapestStore()).name+' at '+inr(t[cheapestStore()])+'.';
+}
+function renderGuides(){
+  $('#guideGrid').innerHTML=GUIDES.map(function(g,i){
+    return '<button class="card guide" type="button" data-i="'+i+'"><div class="g-ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><h3>'+esc(g.t)+'</h3><p>'+esc(g.d)+'</p></button>';
+  }).join('');
+  $$('#guideGrid .guide').forEach(function(b){b.addEventListener('click',function(){
+    var g=GUIDES[+b.getAttribute('data-i')];
+    $('#sheetBody').innerHTML='<h2 id="sheetTitle">'+esc(g.t)+'</h2><p style="font-size:15px;margin-top:8px">'+esc(g.body)+'</p><p class="small muted" style="margin-top:14px">Prices are indicative, Bengaluru, November 2026.</p>';
+    $('#sheetBg').classList.add('open');
+  })});
+}
+function openItem(id){
+  var it=itemById(id);if(!it)return;
+  var best=cheapestStoreFor(it);
+  var rows=STORES.map(function(s){
+    var p=priceOf(it,s.id),isBest=s.id===best;
+    return '<div class="vrow"><div class="vn"><b>'+esc(s.name)+(isBest?' — cheapest':'')+'</b><span>'+esc(s.tag)+'</span></div><div class="vv">'+inr(p)+' <small>/ '+esc(it.unit)+'</small></div><span class="pill '+(isBest?'ok':s.id===state.store?'warn':'ok')+'">'+(isBest?'CHEAPEST':s.id===state.store?'YOUR STORE':'—')+'</span></div>';
+  }).join('');
+  var cur=priceOf(it,state.store);
+  $('#sheetBody').innerHTML='<h2 id="sheetTitle">'+esc(it.name)+'</h2>'
+    +'<p class="small muted">'+esc(aisleById(it.aisle).name)+' · per '+esc(it.unit)+' · '+fmtQty(it.qty)+' '+esc(it.unit)+' in your basket</p>'
+    +rows
