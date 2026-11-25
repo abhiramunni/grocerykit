@@ -831,3 +831,148 @@ function openItem(id){
   $('#sheetBody').innerHTML='<h2 id="sheetTitle">'+esc(it.name)+'</h2>'
     +'<p class="small muted">'+esc(aisleById(it.aisle).name)+' · per '+esc(it.unit)+' · '+fmtQty(it.qty)+' '+esc(it.unit)+' in your basket</p>'
     +rows
+    +'<p style="font-size:14.5px;margin-top:14px">'+fmtQty(it.qty||it.step||1)+' '+esc(it.unit)+' at '+esc(storeById(state.store).name)+' costs <b>'+inr((it.qty||it.step||1)*cur)+'</b>. At the cheapest store ('+esc(storeById(best).name)+') the same costs <b>'+inr((it.qty||it.step||1)*priceOf(it,best))+'</b>.</p>'
+    +'<p class="small muted" style="margin-top:8px">Per-unit math: '+inr(cur)+' per '+esc(it.unit)+' at '+esc(storeById(state.store).name)+' vs '+inr(priceOf(it,best))+' at '+esc(storeById(best).name)+'. Prices are indicative.</p>'
+    +'<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap"><button class="btn terra" type="button" id="sheetAddBtn">'+(it.qty>0?'In your basket ('+fmtQty(it.qty)+' '+esc(it.unit)+')':'Add to list')+'</button>'
+    +'<button class="btn ghost" type="button" id="sheetQtyBtn">+ '+(it.step||1)+' '+esc(it.unit)+'</button></div>';
+  $('#sheetBg').classList.add('open');
+  $('#sheetAddBtn').addEventListener('click',function(){
+    if(it.qty===0)it.qty=it.step||1;
+    save();renderAll();openItem(id);toast(it.name+' is in your basket');
+  });
+  $('#sheetQtyBtn').addEventListener('click',function(){
+    it.qty=Math.round((it.qty+(it.step||1))*100)/100;
+    save();renderAll();openItem(id);
+  });
+}
+function renderCustomAisles(){
+  var sel=$('#cuAisle');
+  sel.innerHTML=AISLES.map(function(a){return '<option value="'+a.id+'">'+esc(a.name)+'</option>'}).join('');
+}
+function renderAll(){
+  renderBasket();renderStores();renderAisles();renderMyList();
+  renderPantry();renderWatch();renderSpend();renderGuides();
+}
+
+/* ================= interactions ================= */
+function copyText(txt,msg){
+  function done(){toast(msg)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,function(){fallback()})}else fallback();
+  function fallback(){
+    if(!document.execCommand){done();return}
+    var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy')}catch(e){}
+    ta.remove();done();
+  }
+}
+function copyListText(){
+  var st=storeById(state.store);
+  var lines=['GroceryKit — Shopping list ('+st.name+')'];
+  AISLES.forEach(function(a){
+    var rows=basketItems().filter(function(it){return it.aisle===a.id});
+    if(!rows.length)return;
+    lines.push(a.name+':');
+    rows.forEach(function(it){lines.push((state.bought[it.id]?'[bought] ':'')+it.name+' — '+fmtQty(it.qty)+' '+it.unit+' — '+inr(lineTotal(it,state.store)))});
+  });
+  var leftTotal=0;
+  basketItems().forEach(function(it){if(!state.bought[it.id])leftTotal+=lineTotal(it,state.store)});
+  lines.push('Left to buy: '+inr(leftTotal)+' at '+st.name);
+  return lines.join('\n');
+}
+function wire(){
+  /* search */
+  $('#searchInput').addEventListener('input',function(){searchQ=this.value;renderAisles()});
+  /* budget */  
+  $('#budgetInput').addEventListener('change',function(){
+    var v=parseInt(this.value,10);
+    if(isNaN(v)||v<100){this.value=String(state.budget);toast('Budget must be at least ₹100');return}
+    state.budget=v;save();renderAll();toast('Weekly budget set to '+inr(v));
+  });
+  /* basket foot */
+  $('#seeListBtn').addEventListener('click',function(){safeScroll($('#mylist'))});
+  $('#copySummaryBtn').addEventListener('click',function(){copyText(buildSummary(),'Summary copied')});
+  /* sheets */
+  $('#sheetClose').addEventListener('click',function(){$('#sheetBg').classList.remove('open')});
+  $('#sheetBg').addEventListener('click',function(e){if(e.target===$('#sheetBg'))$('#sheetBg').classList.remove('open')});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape')$('#sheetBg').classList.remove('open');
+    if((e.key==='Enter'||e.key===' ')&&e.target&&e.target.classList&&e.target.classList.contains('item')){e.preventDefault();openItem(e.target.getAttribute('data-id'))}
+  });
+  /* my list */
+  $('#copyListBtn').addEventListener('click',function(){
+    if(!basketCount()){toast('Your list is empty');return}
+    copyText(copyListText(),'List copied');
+  });
+  $('#clearBoughtBtn').addEventListener('click',function(){
+    var n=Object.keys(state.bought).length;
+    state.bought={};save();renderMyList();renderBasket();
+    toast(n>0?'Bought items cleared':'Nothing ticked off yet');
+  });
+  /* add custom item */
+  $('#addCustomBtn').addEventListener('click',function(){
+    var name=$('#cuName').value.trim();
+    var aisle=$('#cuAisle').value;
+    var price=parseFloat($('#cuPrice').value);
+    var qty=parseFloat($('#cuQty').value);
+    if(!name){toast('Give your item a name first');return}
+    if(isNaN(price)||price<=0){toast('Enter a price above ₹0');return}
+    if(isNaN(qty)||qty<=0)qty=1;
+    state.items.push({id:'c'+Date.now(),name:name,unit:'pack',aisle:aisle,d:Math.round(price),b:Math.round(price),k:Math.round(price),qty:Math.round(qty*100)/100,step:1,sample:false});
+    save();renderAll();
+    $('#cuName').value='';$('#cuPrice').value='';
+    toast(name+' added to '+aisleById(aisle).name);
+    safeScroll($('#aisles'));
+  });
+  /* remove samples */
+  $('#removeSamplesBtn').addEventListener('click',function(){
+    var n=0;
+    state.items.forEach(function(it){if(it.sample&&it.qty>0){it.qty=0;n++}});
+    state.bought={};state.samples=false;
+    save();renderAll();
+    toast(n>0?'Sample basket removed — start your own list':'No sample basket to remove');
+  });
+  /* erase all */
+  $('#eraseAllBtn').addEventListener('click',function(){
+    if(!window.confirm('Erase everything in GroceryKit — your basket, list, budget and settings?'))return;
+    var fresh=seedState();
+    fresh.items.forEach(function(it){it.qty=0});
+    fresh.samples=false;fresh.seenIntro=true;
+    for(var k in fresh)state[k]=fresh[k];    
+    save();renderAll();toast('Everything erased');
+  });
+  /* intro */
+  var intro=$('#intro');
+  function closeIntro(){intro.classList.add('gone');state.seenIntro=true;save();maybeCoach()}
+  intro.addEventListener('click',closeIntro);
+  $('#skipIntro').addEventListener('click',function(e){e.stopPropagation();closeIntro()});
+  if(state.seenIntro){intro.classList.add('gone');setTimeout(maybeCoach,600)}
+  else{setTimeout(closeIntro,4200)}
+  /* coach */
+  var steps=[
+    {t:'Welcome to GroceryKit',x:'Know the price before you reach the shop. This 30-second tour shows you the three things that matter.'},
+    {t:'1 · Pick your store',x:'DMart, BigBasket or your local kirana — tap a store and every price, total and cheapest badge updates at once.'},
+    {t:'2 · Build the basket, tick it off in the shop',x:'Tap + or − in the aisles to fill your basket, then open My List in the shop and tick things off as they go in the trolley.'}
+  ];
+  function maybeCoach(){
+    if(state.coachStep===-1&&!state.seenCoach){state.coachStep=0;showCoach()}
+  }
+  function showCoach(){
+    var s=steps[state.coachStep];
+    $('#coachTitle').textContent=s.t;$('#coachText').textContent=s.x;
+    $('#coachDots').textContent='Step '+(state.coachStep+1)+' of '+steps.length;
+    $('#coachNext').textContent=state.coachStep===steps.length-1?'Done':'Next';
+    $('#coach').classList.add('show');
+  }
+  $('#coachNext').addEventListener('click',function(){
+    if(state.coachStep>=steps.length-1){endCoach();return}
+    state.coachStep++;save();showCoach();
+  });
+  $('#coachSkip').addEventListener('click',endCoach);
+  function endCoach(){$('#coach').classList.remove('show');state.coachStep=-1;state.seenCoach=true;save()}
+}
+renderCustomAisles();
+renderAll();
+wire();
+</script>
+</body>
+</html>
