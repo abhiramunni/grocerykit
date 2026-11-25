@@ -565,3 +565,48 @@ var ITEMS=[
  {id:'poha',name:'Poha 500 g',unit:'pkt',aisle:'staples',d:42,b:46,k:40,qty:0,step:1},
  {id:'rava',name:'Rava 500 g',unit:'pkt',aisle:'staples',d:38,b:42,k:36,qty:0,step:1},
  {id:'chillipowder',name:'Chilli powder 100 g',unit:'pkt',aisle:'spices',d:42,b:46,k:40,qty:0,step:1},
+ {id:'turmeric',name:'Turmeric powder 100 g',unit:'pkt',aisle:'spices',d:32,b:36,k:30,qty:0,step:1},
+ {id:'corianderpowder',name:'Coriander powder 100 g',unit:'pkt',aisle:'spices',d:38,b:42,k:36,qty:0,step:1},
+ {id:'garammasala',name:'Garam masala 50 g',unit:'pkt',aisle:'spices',d:38,b:42,k:36,qty:0,step:1},
+ {id:'mustard',name:'Mustard seeds 100 g',unit:'pkt',aisle:'spices',d:28,b:32,k:26,qty:0,step:1},
+ {id:'cumin',name:'Cumin seeds 100 g',unit:'pkt',aisle:'spices',d:52,b:58,k:48,qty:0,step:1},
+ {id:'tea',name:'Tea powder 250 g',unit:'pkt',aisle:'spices',d:145,b:155,k:142,qty:1,step:1},
+ {id:'coffee',name:'Coffee powder 200 g',unit:'pkt',aisle:'spices',d:165,b:178,k:160,qty:0,step:1},
+ {id:'dishwash',name:'Dishwash bar',unit:'pc',aisle:'household',d:32,b:35,k:30,qty:2,step:1},
+ {id:'detergent',name:'Laundry detergent 1 kg',unit:'kg',aisle:'household',d:118,b:128,k:115,qty:0,step:0.5},
+ {id:'soap',name:'Bath soap 100 g',unit:'pc',aisle:'household',d:38,b:42,k:36,qty:4,step:1},
+ {id:'toothpaste',name:'Toothpaste 150 g',unit:'tube',aisle:'household',d:98,b:108,k:95,qty:0,step:1},
+ {id:'floorcleaner',name:'Floor cleaner 1 L',unit:'bottle',aisle:'household',d:145,b:155,k:142,qty:0,step:1},
+ {id:'tissue',name:'Tissue roll (pack of 4)',unit:'pack',aisle:'household',d:95,b:105,k:92,qty:0,step:1},
+ {id:'garbagebags',name:'Garbage bags (30)',unit:'pack',aisle:'household',d:85,b:92,k:82,qty:0,step:1},
+ {id:'coconutoil',name:'Coconut oil 500 ml',unit:'bottle',aisle:'household',d:210,b:225,k:208,qty:0,step:1}
+];
+var STORES=[
+ {id:'dmart',name:'DMart',tag:'Supermarket · BTM Layout'},
+ {id:'bigbasket',name:'BigBasket',tag:'Online · delivered home'},
+ {id:'kirana',name:'Local Kirana',tag:'Your neighbourhood shop'}
+];
+function storeById(id){for(var i=0;i<STORES.length;i++)if(STORES[i].id===id)return STORES[i];return STORES[0]}
+function priceOf(it,store){return store==='dmart'?it.d:store==='bigbasket'?it.b:it.k}
+function cheapestStoreFor(it){
+  var best='dmart',bestP=it.d;
+  if(it.b<bestP){best='bigbasket';bestP=it.b}
+  if(it.k<bestP){best='kirana';bestP=it.k}
+  return best;
+}
+
+/* ---- pantry: days left from Wed 25 Nov 2026 ---- */
+var PANTRY=[
+ {id:'pantry-rice',name:'Sona Masoori rice',pack:'5 kg bag',days:13,item:'rice'},
+ {id:'pantry-toor',name:'Toor dal',pack:'1 kg',days:6,item:'toor'},
+ {id:'pantry-sugar',name:'Sugar',pack:'1 kg',days:20,item:'sugar'},
+ {id:'pantry-oil',name:'Sunflower oil',pack:'1 L',days:4,item:'oil',low:true},
+ {id:'pantry-tea',name:'Tea powder',pack:'250 g',days:9,item:'tea'},
+ {id:'pantry-atta',name:'Wheat atta',pack:'5 kg',days:15,item:'atta'},
+ {id:'pantry-salt',name:'Salt',pack:'1 kg',days:45,item:'salt'},
+ {id:'pantry-milk',name:'Milk',pack:'None left',days:0,item:'milk',buy:true}
+];
+/* ---- spend log: real weekly bills ---- */
+var SPEND=[
+ {label:'w/c 3 Nov',amt:1720},
+ {label:'w/c 10 Nov',amt:1905},
