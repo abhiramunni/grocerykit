@@ -625,3 +625,50 @@ var GUIDES=[
  {t:'Buy seasonal',d:'What is cheap in November, and what is not.',body:'In November, onions, tomatoes and potatoes are coming in fresh and prices soften — this week all three are down about 11%. Lemons, on the other hand, went up 14% this week. The rule is simple: when a vegetable is in season, it is cheap and it tastes better. Build the week\'s menu around what is cheap today, not what you planned last month.'},
  {t:'Kirana vs supermarket',d:'Where each one wins.',body:'This week the kirana wins the whole basket: ₹1,847 against DMart\'s ₹1,891 and BigBasket\'s ₹2,044. Loose vegetables and daily items are the kirana\'s strength. The supermarket wins on packed staples and on offers — a 5 kg rice bag or a buy-one-get-one on detergent. BigBasket wins on one thing only: not having to go out. Use each shop for what it is good at, and the same basket costs less.'},
  {t:'Pantry first',d:'Check before you shop — it is the easiest money you will save.',body:'Half of overspending is buying what is already at home. Before you make the list, open the cupboard and check the staples: rice, dal, oil, sugar, tea, salt. GroceryKit\'s pantry tab counts the days each one has left — sunflower oil has 4 days left this week, so it goes on the list, but salt has 45 days, so it stays off. Five minutes at home saves a duplicate bag in the trolley.'},
+ {t:'The ₹500 rule',d:'If the bill jumps, check these 5 things.',body:'When the bill is ₹500 more than usual, it is almost always one of five things: (1) a big bag you only buy once a month, like rice or oil, landed this week; (2) a fruit or vegetable is out of season and priced high; (3) a "buy 2" offer quietly doubled something; (4) a household item — detergent, tissue, cleaner — slipped in; (5) the quantities crept up — 2 kg of onions instead of 1. Check those five before you blame the shop.'}
+];
+
+/* ---- seed state ---- */
+function seedItems(){return ITEMS.map(function(it){var c={};for(var k in it)c[k]=it[k];c.sample=true;return c})}
+function seedState(){
+  return {
+    store:'dmart', budget:2000, seenIntro:false, coachStep:-1, seenCoach:false, samples:true,
+    items:seedItems(), bought:{}
+  };
+}
+var state;
+try{state=JSON.parse(localStorage.getItem(LS_KEY))||seedState()}catch(e){state=seedState()}
+if(!state.items||!state.items.length)state=seedState();
+function save(){try{localStorage.setItem(LS_KEY,JSON.stringify(state))}catch(e){}}
+save();
+
+/* ---- basket math ---- */
+function itemById(id){for(var i=0;i<state.items.length;i++)if(state.items[i].id===id)return state.items[i];return null}
+function basketItems(){return state.items.filter(function(it){return it.qty>0})}
+function basketCount(){return basketItems().length}
+function totals(){
+  var t={dmart:0,bigbasket:0,kirana:0};
+  basketItems().forEach(function(it){t.dmart+=it.qty*it.d;t.bigbasket+=it.qty*it.b;t.kirana+=it.qty*it.k});
+  t.dmart=Math.round(t.dmart);t.bigbasket=Math.round(t.bigbasket);t.kirana=Math.round(t.kirana);
+  return t;
+}
+function cheapestStore(){
+  var t=totals();
+  if(t.kirana<=t.dmart&&t.kirana<=t.bigbasket)return 'kirana';
+  if(t.dmart<=t.bigbasket)return 'dmart';
+  return 'bigbasket';
+}
+function lineTotal(it,store){return it.qty*priceOf(it,store)}
+function buildSummary(){
+  var st=storeById(state.store),t=totals(),cheap=cheapestStore();
+  var lines=['GroceryKit — This week\'s basket ('+st.name+')'];
+  lines.push(basketCount()+' items · Total '+inr(t[state.store])+' · Budget '+inr(state.budget)+' ('+Math.round(t[state.store]/state.budget*100)+'% used)');
+  lines.push('Cheapest this week: '+storeById(cheap).name+' '+inr(t[cheap])+' (saves '+inr(t.bigbasket-t.kirana)+' vs BigBasket)');
+  AISLES.forEach(function(a){
+    var rows=basketItems().filter(function(it){return it.aisle===a.id});
+    if(!rows.length)return;
+    lines.push(a.name+': '+rows.map(function(it){return it.name+' '+fmtQty(it.qty)+' '+it.unit+' — '+inr(lineTotal(it,state.store))}).join('; '));
+  });
+  lines.push('Prices are indicative, Bengaluru, November 2026.');
+  return lines.join('\n');
+}
