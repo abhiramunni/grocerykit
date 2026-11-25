@@ -210,3 +210,39 @@ section.block{margin-top:44px}
 .spend-note{margin-top:14px;font-size:13.5px;color:var(--ink2)}
 /* ---------- guides ---------- */
 .guides{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.guide{padding:20px;cursor:pointer;text-align:left}
+.guide:hover{border-color:var(--bronze)}
+.guide .g-ic{width:44px;height:44px;border-radius:13px;background:var(--paper2);display:grid;place-items:center;color:var(--bronze);margin-bottom:12px}
+.guide h3{font-size:17.5px;line-height:1.25}
+.guide p{font-size:13.5px;color:var(--mut);margin-top:5px}
+/* ---------- photo band ---------- */
+.band{margin-top:44px;border-radius:24px;overflow:hidden;position:relative}
+.band img{width:100%;height:280px;object-fit:cover;animation:kb 26s ease-in-out infinite alternate}
+.band .cap{position:absolute;left:0;right:0;bottom:0;padding:22px;color:#fdf6e7;background:linear-gradient(180deg,transparent,rgba(28,19,10,.78))}
+.band .cap h2{font-size:clamp(22px,3.6vw,30px)}
+.band .cap p{color:#f2e3c8;font-size:14.5px;margin-top:4px}
+/* ---------- footer / settings ---------- */
+footer{margin-top:48px;border-top:1px solid var(--line);padding:26px 0 40px}
+.foot-grid{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between}
+.foot-grid p{max-width:520px;font-size:13.5px;color:var(--mut)}
+/* ---------- sheet / modal ---------- */
+.sheet-bg{position:fixed;inset:0;background:rgba(28,19,10,.55);z-index:120;display:none;align-items:flex-end;justify-content:center}
+.sheet-bg.open{display:flex}
+.sheet{background:var(--paper);width:min(680px,100%);max-height:88vh;overflow:auto;border-radius:24px 24px 0 0;padding:24px 24px 30px;animation:up .28s ease both}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet .x{float:right;border:1px solid var(--line);background:var(--card);border-radius:99px;width:36px;height:36px;font-size:18px;line-height:1}
+.sheet h2{font-size:24px;margin-bottom:4px}
+.vrow{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:12px 2px;border-top:1px solid var(--line);font-size:14.5px}
+.vrow .vn b{display:block}
+.vrow .vn span{font-size:12.5px;color:var(--mut)}
+.vrow .vv{font-family:Fraunces,serif;font-weight:700;font-size:17px;text-align:right}
+.vrow .vv small{font-size:12px;font-family:Inter,sans-serif;color:var(--mut);font-weight:600}
+/* ---------- coach ---------- */
+.coach{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:150;width:min(430px,calc(100vw - 32px));background:var(--ink);color:#f7ead2;border-radius:18px;padding:18px 20px;box-shadow:var(--sh2);display:none}
+.coach.show{display:block}
+.coach h3{font-size:18px;color:#fdf6e7}
+.coach p{font-size:14px;color:#e6cfa4;margin-top:5px}
+.coach .row{display:flex;gap:8px;margin-top:14px;justify-content:flex-end}
+.coach .btn{padding:9px 16px;font-size:13px}
+.coach .dots{font-size:12px;color:#cbb894;align-self:center;margin-right:auto}
+/* ---------- toast ---------- */
