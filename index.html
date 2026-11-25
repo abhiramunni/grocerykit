@@ -307,3 +307,53 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding:26px 0 40px}
     <div class="copy wrap">
       <p class="eyebrow" style="color:#e8b64c">Bengaluru · November 2026</p>
       <h1>Know the price <em>before</em> you reach the shop.</h1>
+      <p>Plan the week's basket once, see what it costs at DMart, BigBasket and your local kirana — then tick it off in the shop, item by item.</p>
+      <p class="disc">Prices are indicative, checked in Bengaluru in November 2026. Your shop's shelf price is the one that counts.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- this week's basket -->
+    <section class="basket-card" aria-label="This week's basket" id="basketCard">
+      <div class="basket-top">
+        <div class="basket-main">
+          <p class="eyebrow">This week's basket</p>
+          <h2 id="basketTitle">Your basket, priced at DMart</h2>
+          <p class="sub" id="basketSub">16 items · 25 Nov 2026</p>
+          <div class="basket-total" id="basketTotal">₹1,891 <small>at DMart</small></div>
+          <div><span class="cheap-call" id="cheapCallout">Local Kirana is cheapest this week — ₹1,847</span></div>
+          <div class="budget-edit">
+            <label for="budgetInput">Weekly budget</label>
+            <span>₹</span><input type="number" id="budgetInput" min="100" step="50" value="2000" aria-label="Weekly budget in rupees">
+            <span class="muted" id="budgetNote">You are at 95% of budget at DMart.</span>
+          </div>
+        </div>
+        <div class="ringwrap">
+          <div class="ring" role="img" aria-label="Budget used">
+            <svg width="112" height="112" viewBox="0 0 112 112"><circle cx="56" cy="56" r="48" fill="none" stroke="#efe5d0" stroke-width="10"/><circle id="budgetRing" cx="56" cy="56" r="48" fill="none" stroke="#c05b2e" stroke-width="10" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="15"/></svg>
+            <span class="rv2"><span><span id="budgetPct">95%</span><small>of budget</small></span></span>
+          </div>
+          <div class="ring-cap" id="ringCap">₹109 left in the budget</div>
+        </div>
+      </div>
+      <div class="basket-foot">
+        <button class="btn terra" type="button" id="seeListBtn">See my list</button>
+        <button class="btn" type="button" id="copySummaryBtn">Copy summary</button>
+        <span class="small muted">Tap any item in the aisles below to compare all three stores.</span>
+      </div>
+    </section>
+
+    <!-- store picker -->
+    <section class="block" id="stores">
+      <div class="sec-head">
+        <h2>Pick your store</h2>
+        <span class="count">every price below follows your pick</span>
+      </div>
+      <p class="sec-sub">One tap, and every shelf price, basket total and cheapest badge updates. The kirana is usually cheapest for loose vegetables; the supermarket wins on packed staples.</p>
+      <div class="stores" id="storePicker" role="group" aria-label="Choose a store"></div>
+    </section>
+
+    <!-- aisles -->
+    <section class="block" id="aisles">
+      <div class="sec-head">
+        <h2>The aisles</h2>
