@@ -753,3 +753,49 @@ function renderMyList(){
   $('#boughtCount').textContent=boughtN+' of '+items.length+' bought';
   if(!items.length){box.innerHTML='<p class="muted" style="padding:14px 2px">Your list is empty — add items from the aisles above, or use "Add your own item" below.</p>'}
   else{
+    box.innerHTML=AISLES.map(function(a){
+      var rows=items.filter(function(it){return it.aisle===a.id});
+      if(!rows.length)return '';
+      return '<div class="list-group"><h4>'+esc(a.name)+'</h4>'+rows.map(function(it){
+        var bought=!!state.bought[it.id];
+        return '<label class="lrow'+(bought?' bought':'')+'"><input type="checkbox" data-id="'+it.id+'"'+(bought?' checked':'')+'><span class="ln"><b>'+esc(it.name)+'</b><span>'+fmtQty(it.qty)+' '+esc(it.unit)+' × '+inr(priceOf(it,state.store))+' at '+esc(storeById(state.store).name)+'</span></span><span class="lp">'+inr(lineTotal(it,state.store))+'</span></label>';
+      }).join('')+'</div>';
+    }).join('');
+  }
+  var leftTotal=0;
+  items.forEach(function(it){if(!state.bought[it.id])leftTotal+=lineTotal(it,state.store)});
+  $('#listTotal').innerHTML=inr(leftTotal)+' <small>left to buy at '+esc(storeById(state.store).name)+'</small>';
+  $$('#myList input[type=checkbox]').forEach(function(cb){cb.addEventListener('change',function(){
+    var id=cb.getAttribute('data-id');
+    if(cb.checked)state.bought[id]=true;else delete state.bought[id];
+    save();renderMyList();renderBasket();
+  })});
+}
+
+function renderPantry(){
+  var useFirst=PANTRY.filter(function(p){return !p.buy&&p.days>0&&p.days<=7}).sort(function(a,b){return a.days-b.days});
+  $('#useFirst').innerHTML='<b>Use first:</b> '+useFirst.map(function(p){return esc(p.name)+' ('+p.days+' days left)'}).join(' · ')+'. <span class="muted">Milk is out — it is already on your list.</span>';
+  $('#pantryList').innerHTML=PANTRY.map(function(p){
+    var tag=p.buy?'<span class="tag-buy">BUY</span>':p.low?'<span class="tag-low">LOW</span>':'';
+    var daysTxt=p.buy?'Out of stock':p.days+' days';
+    return '<div class="prow"><div class="pn"><b>'+esc(p.name)+tag+'</b><span>'+esc(p.pack)+'</span></div>'
+      +'<span class="days'+(p.low?' low':'')+'">'+daysTxt+'<small>left</small></span>'
+      +'<button type="button" class="addbtn" data-item="'+p.item+'">Add to list</button></div>';
+  }).join('');
+  $$('#pantryList .addbtn').forEach(function(b){b.addEventListener('click',function(){
+    var it=itemById(b.getAttribute('data-item'));if(!it)return;
+    if(it.qty===0)it.qty=it.step||1;else it.qty=Math.round((it.qty+(it.step||1))*100)/100;
+    save();renderAll();toast(it.name+' added to your list');
+  })});
+}
+function renderWatch(){
+  $('#watchList').innerHTML=WATCH.map(function(w){
+    var down=w.pct<0;
+    return '<div class="wrow"><div class="wn"><b>'+esc(w.item)+'</b><span>'+inr(w.from)+' → '+inr(w.to)+' '+esc(w.note)+'</span></div>'
+      +'<span class="wv">'+inr(w.to)+'</span>'
+      +'<span class="pct '+(down?'down':'up')+'">'+(down?'':'+')+w.pct+'%</span></div>';
+  }).join('');
+}
+function renderSpend(){
+  var t=totals();
+  var bars=SPEND.map(function(s){return {label:s.label,amt:s.amt,proj:false}});
