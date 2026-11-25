@@ -61,3 +61,35 @@ header.top{position:sticky;top:0;z-index:60;background:rgba(247,241,229,.92);bac
 .hero{position:relative;border-radius:0 0 28px 28px;overflow:hidden;background:#3a2a18}
 .hero img.ph{width:100%;height:min(58vw,430px);object-fit:cover;object-position:center 38%;animation:kb 26s ease-in-out infinite alternate}
 @keyframes kb{from{transform:scale(1) translateY(0)}to{transform:scale(1.08) translateY(-8px)}}
+.hero .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(28,19,10,.18) 0%,rgba(28,19,10,0) 42%,rgba(28,19,10,.72) 100%)}
+.hero .copy{position:absolute;left:0;right:0;bottom:0;padding:26px 22px 30px;color:#fdf6e7}
+.hero .copy h1{font-size:clamp(34px,6.4vw,58px);line-height:1.04;max-width:640px}
+.hero .copy h1 em{color:var(--gold);font-style:normal}
+.hero .copy p{margin-top:10px;max-width:560px;color:#f2e3c8;font-size:clamp(14.5px,2.4vw,17px)}
+.hero .disc{margin-top:12px;font-size:12.5px;color:#e8d5ae;opacity:.92}
+/* ---------- basket card overlapping hero ---------- */
+.basket-card{position:relative;z-index:2;margin-top:-64px;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh2);padding:22px}
+.basket-top{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.basket-main{flex:1;min-width:240px}
+.basket-main h2{font-size:clamp(21px,3.4vw,27px);line-height:1.15}
+.basket-main .sub{color:var(--mut);font-size:13.5px;margin-top:3px}
+.basket-total{font-family:Fraunces,serif;font-size:clamp(38px,7vw,52px);font-weight:700;line-height:1;margin-top:10px}
+.basket-total small{font-size:15px;font-family:Inter,sans-serif;font-weight:600;color:var(--mut)}
+.cheap-call{margin-top:10px;display:inline-flex;gap:8px;align-items:center;background:var(--okbg);color:#2f5233;border-radius:99px;padding:8px 14px;font-size:13.5px;font-weight:700}
+.cheap-call b{color:var(--terra)}
+.budget-edit{margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13.5px;color:var(--ink2)}
+.budget-edit label{font-weight:700}
+.budget-edit input{width:110px;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-weight:700}
+.ringwrap{display:flex;flex-direction:column;align-items:center;gap:6px;margin-left:auto}
+.ring{position:relative;width:112px;height:112px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .rv2{position:absolute;inset:0;display:grid;place-items:center;font-family:Fraunces,serif;font-weight:700;font-size:24px}
+.ring .rv2 small{font-size:12px;font-family:Inter,sans-serif;font-weight:600;color:var(--mut);display:block;text-align:center}
+.ring-cap{font-size:12.5px;font-weight:700;color:var(--mut);text-align:center;max-width:130px}
+.basket-foot{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fdf6e7;font-weight:700;font-size:14px;padding:11px 18px;border-radius:99px;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn:hover{background:#3d2d1d}
+.btn.ghost{background:transparent;color:var(--ink);border-color:#cbb894}
+.btn.ghost:hover{background:var(--paper2)}
+.btn.terra{background:var(--terra);border-color:var(--terra)}
+.btn.terra:hover{background:var(--terra-d)}
