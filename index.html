@@ -246,3 +246,64 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding:26px 0 40px}
 .coach .btn{padding:9px 16px;font-size:13px}
 .coach .dots{font-size:12px;color:#cbb894;align-self:center;margin-right:auto}
 /* ---------- toast ---------- */
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,80px);background:var(--ink);color:#f7ead2;padding:12px 20px;border-radius:99px;font-size:14px;font-weight:600;z-index:180;transition:transform .3s ease;box-shadow:var(--sh2);opacity:0;pointer-events:none}
+#toast.show{transform:translate(-50%,0);opacity:1}
+@media (max-width:820px){
+  .split{grid-template-columns:1fr}
+  .guides{grid-template-columns:1fr 1fr}
+  .stores{grid-template-columns:1fr}
+  .custom .form-grid{grid-template-columns:1fr 1fr}
+  .top nav{display:none}
+  .basket-card{margin-top:-40px}
+}
+@media (max-width:520px){
+  .guides{grid-template-columns:1fr}
+  .custom .form-grid{grid-template-columns:1fr}
+  .ringwrap{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+
+</style>
+</head>
+<body>
+
+<!-- cinematic intro -->
+<div id="intro" role="button" aria-label="Skip intro" title="Tap to skip">
+  <div class="rays" aria-hidden="true"></div>
+  <div class="mark" aria-hidden="true">
+    <svg width="52" height="52" viewBox="0 0 64 64" fill="none" stroke="#b4762a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 26h36l-4 26a4 4 0 0 1-4 3H22a4 4 0 0 1-4-3l-4-26z"/><path d="M22 26v-4a10 10 0 0 1 20 0v4"/><path d="M26 34v8M32 34v8M38 34v8"/></svg>
+  </div>
+  <h1>Grocery<span>Kit</span></h1>
+  <p class="tag">Know the price before you reach the shop.</p>
+  <div class="bar" aria-hidden="true"><i></i></div>
+  <button class="skip" type="button" id="skipIntro">Skip intro</button>
+</div>
+
+<!-- header -->
+<header class="top">
+  <div class="wrap top-in">
+    <a class="logo" href="#top" aria-label="GroceryKit home">
+      <span class="lg" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 64 64" fill="none" stroke="#e8b64c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 26h36l-4 26a4 4 0 0 1-4 3H22a4 4 0 0 1-4-3l-4-26z"/><path d="M22 26v-4a10 10 0 0 1 20 0v4"/><path d="M26 34v8M32 34v8M38 34v8"/></svg></span>
+      <span><b>GroceryKit</b><small>Weekly shop, priced</small></span>
+    </a>
+    <nav aria-label="Sections">
+      <a href="#stores">Stores</a>
+      <a href="#aisles">Aisles</a>
+      <a href="#mylist">My list</a>
+      <a href="#pantry">Pantry</a>
+      <a href="#spend">Spend</a>
+      <a href="#guides">Guides</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- hero -->
+  <div class="hero">
+    <img class="ph" src="grocerykit-hero.webp" alt="A vegetable market stall in warm morning light, with baskets of onions, tomatoes and greens" fetchpriority="high">
+    <div class="veil" aria-hidden="true"></div>
+    <div class="copy wrap">
+      <p class="eyebrow" style="color:#e8b64c">Bengaluru · November 2026</p>
+      <h1>Know the price <em>before</em> you reach the shop.</h1>
