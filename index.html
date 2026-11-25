@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GroceryKit — Know the Price Before You Reach the Shop</title>
+<meta name="description" content="GroceryKit is a weekly grocery planner for Bengaluru: indicative prices at DMart, BigBasket and your local kirana, aisle shelves, a tick-off shopping list, pantry stock, price watch and a spend log — all on your device.">
+<meta name="theme-color" content="#2b1d12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232b1d12'/%3E%3Cpath d='M16 26h32l-4 24a4 4 0 0 1-4 3H24a4 4 0 0 1-4-3l-4-24z' fill='none' stroke='%23d9a441' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M24 26v-3a8 8 0 0 1 16 0v3' fill='none' stroke='%23d9a441' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --paper:#f7f1e5; --paper2:#efe5d0; --card:#fffdf7; --ink:#2b1d12; --ink2:#5d4c3a;
+  --mut:#8a7661; --line:#e5d8c2; --bronze:#b4762a; --amber:#d9a441; --gold:#e8b64c;
+  --terra:#c05b2e; --terra-d:#9c4520; --green:#4a7a4f; --greenbg:#e9f1e4;
+  --red:#a83a22; --redbg:#fbe9e2; --watch:#9a6a14; --watchbg:#fdf3d7;
+  --okbg:#eef4ea; --r:18px; --sh:0 10px 30px rgba(43,29,18,.10);
+  --sh2:0 22px 55px rgba(43,29,18,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.serif{font-family:Fraunces,Georgia,serif;font-weight:600;letter-spacing:-.01em}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:15px;color:var(--ink)}
+a{color:var(--terra)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+.muted{color:var(--mut)}
+.small{font-size:13px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--bronze)}
+/* ---------- cinematic intro ---------- */
+#intro{position:fixed;inset:0;z-index:200;background:linear-gradient(160deg,#241a10 0%,#3a2a18 55%,#6b4423 100%);color:#f7ead2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;cursor:pointer;overflow:hidden}
