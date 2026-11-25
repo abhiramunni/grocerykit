@@ -421,3 +421,60 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding:26px 0 40px}
       </div>
       <p class="sec-sub">Half of overspending is buying what is already at home. These are the staples on your shelf, and how many days each one has left.</p>
       <div class="split">
+        <div class="card pantry">
+          <p class="eyebrow">On your shelf</p>
+          <h3 class="serif" style="font-size:21px;margin-top:6px">Pantry stock</h3>
+          <div class="usefirst" id="useFirst"></div>
+          <div id="pantryList" style="margin-top:8px"></div>
+        </div>
+        <div class="card watch">
+          <p class="eyebrow">This week</p>
+          <h3 class="serif" style="font-size:21px;margin-top:6px">Price watch</h3>
+          <p class="small muted" style="margin-top:4px">How the prices of four everyday items moved since last week. A fall is a good week to stock up.</p>
+          <div id="watchList" style="margin-top:8px"></div>
+          <p class="small muted" style="margin-top:12px">Tomatoes, onions and potatoes are all cheaper this week. Lemons went up — buy fewer, or skip them this week.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- spend -->
+    <section class="block" id="spend">
+      <div class="sec-head">
+        <h2>What you spend</h2>
+        <span class="count">last 3 weeks + this week</span>
+      </div>
+      <p class="sec-sub">Three weeks of real bills, and this week's basket projected at the store you picked. If the bar jumps, something in the basket changed.</p>
+      <div class="card spend-card">
+        <div class="bars" id="spendBars"></div>
+        <p class="spend-note" id="spendNote"></p>
+      </div>
+    </section>
+
+    <!-- guides -->
+    <section class="block" id="guides">
+      <div class="sec-head">
+        <h2>Guides, in plain words</h2>
+        <span class="count">tap one to read it</span>
+      </div>
+      <p class="sec-sub">Six short explainers for the questions everyone asks standing in a shop aisle with a bill that looks too big.</p>
+      <div class="guides" id="guideGrid"></div>
+    </section>
+
+    <!-- photo band -->
+    <div class="band">
+      <img src="grocerykit-flatlay.webp" alt="A flat-lay of the week's groceries on a linen cloth in warm light — vegetables, milk, rice and spices" loading="lazy">
+      <div class="cap">
+        <h2>One list, one shop, no second trip.</h2>
+        <p>Plan it at home, price it before you leave, and tick it off in the shop — so the week's food costs what you expected it to.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <p class="eyebrow">GroceryKit</p>
+      <p style="margin-top:8px"><strong style="color:var(--ink)">Prices are indicative.</strong> They were checked at Bengaluru stores in November 2026 and will move with the market — vegetables most of all. The price on your shop's shelf is the one that counts. GroceryKit is a planner, not a shop: it sells nothing and takes no orders.</p>
+      <p style="margin-top:8px">Everything you enter stays in this browser on your device. No account, no uploads, no tracking.</p>
+    </div>
