@@ -357,3 +357,67 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding:26px 0 40px}
     <section class="block" id="aisles">
       <div class="sec-head">
         <h2>The aisles</h2>
+        <span class="count" id="aisleCount">48 items · 6 aisles</span>
+      </div>
+      <p class="sec-sub">Walk the shop shelf by shelf. Tap + or − to add to your basket — the total at the top moves with you.</p>
+      <div class="searchrow">
+        <input type="search" id="searchInput" placeholder="Search the shop — try tomato, rice, or soap" aria-label="Search items">
+      </div>
+      <div id="aisleSections"></div>
+    </section>
+
+    <!-- my list -->
+    <section class="block" id="mylist">
+      <div class="sec-head">
+        <h2>My list</h2>
+        <span class="count">in-store tick-off mode</span>
+      </div>
+      <p class="sec-sub">This is your basket, grouped by aisle the way the shop is laid out. In the shop, tick each thing off as it goes in the trolley — the running total only counts what is left to buy.</p>
+      <div class="card list-card">
+        <div class="list-head">
+          <h3 class="serif">Shopping list</h3>
+          <span class="count" id="boughtCount">0 of 16 bought</span>
+        </div>
+        <div id="myList"></div>
+        <div class="list-foot">
+          <span class="total" id="listTotal">₹1,891 <small>left to buy at DMart</small></span>
+          <span style="flex:1"></span>
+          <button class="btn" type="button" id="copyListBtn">Copy list</button>
+          <button class="btn ghost" type="button" id="clearBoughtBtn">Clear bought</button>
+        </div>
+      </div>
+      <div class="custom">
+        <h4 class="serif">Add your own item</h4>
+        <p>Something not on the shelves above? Add it here — it joins the aisle you pick, at the price you enter.</p>
+        <div class="form-grid">
+          <div>
+            <label for="cuName">Item name</label>
+            <input type="text" id="cuName" placeholder="e.g. Ragi flour 1 kg" maxlength="60">
+          </div>
+          <div>
+            <label for="cuAisle">Aisle</label>
+            <select id="cuAisle"></select>
+          </div>
+          <div>
+            <label for="cuPrice">Price (₹)</label>
+            <input type="number" id="cuPrice" min="1" step="1" placeholder="e.g. 85">
+          </div>
+          <div>
+            <label for="cuQty">Qty</label>
+            <input type="number" id="cuQty" min="0.25" step="0.25" value="1">
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <button class="btn terra" type="button" id="addCustomBtn">Add to my list</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- pantry + price watch -->
+    <section class="block" id="pantry">
+      <div class="sec-head">
+        <h2>Pantry first</h2>
+        <span class="count">check before you shop</span>
+      </div>
+      <p class="sec-sub">Half of overspending is buying what is already at home. These are the staples on your shelf, and how many days each one has left.</p>
+      <div class="split">
