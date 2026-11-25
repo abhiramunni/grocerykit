@@ -672,3 +672,41 @@ function buildSummary(){
   lines.push('Prices are indicative, Bengaluru, November 2026.');
   return lines.join('\n');
 }
+window.GroceryKit={state:state,ITEMS:ITEMS,AISLES:AISLES,PANTRY:PANTRY,SPEND:SPEND,WATCH:WATCH,GUIDES:GUIDES,totals:totals,cheapestStore:cheapestStore,basketCount:basketCount,buildSummary:buildSummary,itemById:itemById,storeById:storeById};
+
+/* ================= rendering ================= */
+var searchQ='';
+function renderBasket(){
+  var st=storeById(state.store),t=totals(),cheap=cheapestStore();
+  var total=t[state.store];
+  $('#basketTitle').textContent='Your basket, priced at '+st.name;
+  $('#basketSub').textContent=basketCount()+' items · 25 Nov 2026'+(state.samples?' · sample basket':'');
+  $('#basketTotal').innerHTML=inr(total)+' <small>at '+esc(st.name)+'</small>';
+  var cheapName=storeById(cheap).name;
+  var saveVs=Math.round(t.bigbasket-t.kirana),saveDm=Math.round(t.dmart-t.kirana);
+  $('#cheapCallout').innerHTML=esc(cheapName)+' is cheapest this week — '+inr(t.kirana)+' · saves '+inr(saveVs)+' vs BigBasket'+(cheap==='kirana'?' and '+inr(saveDm)+' vs DMart':'');
+  var pct=Math.round(total/state.budget*100);
+  $('#budgetPct').textContent=pct+'%';
+  var ring=$('#budgetRing');
+  if(ring){ring.style.strokeDashoffset=String(301.6*(1-Math.min(total/state.budget,1)));ring.style.stroke=total>state.budget?'#a83a22':total/state.budget>0.9?'#c05b2e':'#4a7a4f'}
+  var left=Math.round(state.budget-total);
+  $('#ringCap').textContent=left>=0?inr(left)+' left in the budget':inr(-left)+' over budget';
+  $('#budgetNote').textContent='You are at '+pct+'% of budget at '+st.name+'.';
+  var bi=$('#budgetInput');if(document.activeElement!==bi)bi.value=String(state.budget);
+}
+function renderStores(){
+  var t=totals(),cheap=cheapestStore();
+  $('#storePicker').innerHTML=STORES.map(function(s){
+    var saveTxt=s.id===cheap?'':('Saves '+inr(Math.max(t.dmart,t.bigbasket,t.kirana)-t[s.id])+' vs the dearest');
+    return '<button class="card store'+(s.id===state.store?' on':'')+'" type="button" data-store="'+s.id+'" aria-pressed="'+(s.id===state.store)+'">'
+      +(s.id===cheap?'<span class="s-badge">Cheapest</span>':'')
+      +'<div class="s-name">'+esc(s.name)+'</div><div class="s-tag">'+esc(s.tag)+'</div>'
+      +'<div class="s-total">'+inr(t[s.id])+' <small>this basket</small></div>'
+      +'<div class="s-save">'+(s.id===cheap?'Cheapest this week':esc(saveTxt))+'</div></button>';
+  }).join('');
+  $$('#storePicker .store').forEach(function(b){b.addEventListener('click',function(){state.store=b.getAttribute('data-store');save();renderAll();toast('Prices now shown at '+storeById(state.store).name)})});
+}
+function itemCardHTML(it){
+  var p=priceOf(it,state.store),best=cheapestStoreFor(it);
+  var bestTxt=best===state.store?'Cheapest here':('Best price: '+storeById(best).name+' '+inr(priceOf(it,best)));
+  return '<div class="item'+(it.qty>0?' in-list':'')+'" role="button" tabindex="0" data-id="'+it.id+'">'
