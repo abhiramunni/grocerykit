@@ -170,3 +170,43 @@ section.block{margin-top:44px}
 .custom p{font-size:13px;color:var(--mut);margin-top:2px}
 .custom .form-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:10px;margin-top:12px}
 .custom label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);display:block;margin-bottom:5px}
+.custom input,.custom select{width:100%;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:10px 11px}
+/* ---------- pantry + watch split ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.pantry{padding:20px}
+.usefirst{margin-top:10px;background:var(--watchbg);border-radius:12px;padding:12px 14px;font-size:14px;color:#6d4a0c}
+.usefirst b{color:var(--ink)}
+.prow{display:flex;gap:10px;align-items:center;padding:12px 2px;border-top:1px solid var(--line)}
+.prow:first-of-type{border-top:0}
+.prow .pn{flex:1;min-width:0}
+.prow .pn b{font-size:14.5px;display:block}
+.prow .pn span{font-size:12.5px;color:var(--mut)}
+.prow .days{font-family:Fraunces,serif;font-weight:700;font-size:16px;white-space:nowrap;text-align:right}
+.prow .days small{display:block;font-size:11px;font-family:Inter,sans-serif;font-weight:600;color:var(--mut)}
+.prow .days.low{color:var(--red)}
+.prow .addbtn{border:1px solid #cbb894;background:var(--card);border-radius:99px;padding:7px 12px;font-size:12.5px;font-weight:700;flex:none}
+.prow .addbtn:hover{border-color:var(--terra);color:var(--terra)}
+.tag-low{display:inline-block;background:var(--redbg);color:var(--red);font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;margin-left:6px;vertical-align:2px}
+.tag-buy{display:inline-block;background:var(--watchbg);color:var(--watch);font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;margin-left:6px;vertical-align:2px}
+.watch{padding:20px}
+.wrow{display:flex;gap:10px;align-items:center;padding:12px 2px;border-top:1px solid var(--line);font-size:14.5px}
+.wrow:first-of-type{border-top:0}
+.wrow .wn{flex:1}
+.wrow .wn b{display:block}
+.wrow .wn span{font-size:12.5px;color:var(--mut)}
+.wrow .wv{font-family:Fraunces,serif;font-weight:700;font-size:16px;white-space:nowrap}
+.wrow .pct{font-size:12.5px;font-weight:800;padding:5px 10px;border-radius:99px;white-space:nowrap}
+.pct.down{background:var(--okbg);color:var(--green)}
+.pct.up{background:var(--redbg);color:var(--red)}
+/* ---------- spend ---------- */
+.spend-card{padding:20px}
+.bars{display:flex;gap:14px;align-items:flex-end;height:190px;margin-top:18px;padding:0 4px}
+.sbar{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.sbar .val{font-family:Fraunces,serif;font-weight:700;font-size:15px}
+.sbar .bar{width:100%;max-width:74px;background:linear-gradient(180deg,var(--amber),var(--bronze));border-radius:10px 10px 4px 4px;min-height:8px}
+.sbar.proj .bar{background:linear-gradient(180deg,var(--terra),var(--terra-d))}
+.sbar.proj .val{color:var(--terra)}
+.sbar .lab{font-size:12px;font-weight:700;color:var(--mut);text-align:center}
+.spend-note{margin-top:14px;font-size:13.5px;color:var(--ink2)}
+/* ---------- guides ---------- */
+.guides{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
