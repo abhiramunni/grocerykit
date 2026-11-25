@@ -133,3 +133,40 @@ section.block{margin-top:44px}
 .item:hover{border-color:var(--bronze)}
 .item.in-list{border-color:var(--terra);box-shadow:0 0 0 1px var(--terra),var(--sh)}
 .item h4{font-size:16.5px;line-height:1.25;font-family:Fraunces,serif;font-weight:600}
+.item .u{font-size:12.5px;color:var(--mut);margin-top:2px}
+.item .price{font-family:Fraunces,serif;font-size:23px;font-weight:700;margin-top:10px}
+.item .price small{font-size:12px;font-family:Inter,sans-serif;font-weight:600;color:var(--mut)}
+.item .best{font-size:12px;font-weight:700;color:var(--green);margin-top:2px;min-height:16px}
+.item .best.other{color:var(--mut)}
+.stepper{display:flex;align-items:center;gap:8px;margin-top:12px}
+.stepper button{width:34px;height:34px;border-radius:50%;border:1px solid #cbb894;background:var(--paper);font-size:18px;font-weight:800;line-height:1;flex:none}
+.stepper button:hover{border-color:var(--terra);color:var(--terra)}
+.stepper .q{flex:1;text-align:center;font-weight:800;font-size:15px}
+.stepper .q small{display:block;font-size:11px;color:var(--mut);font-weight:600}
+.item .line-total{margin-top:10px;font-size:13px;font-weight:700;color:var(--ink2);border-top:1px dashed var(--line);padding-top:9px}
+.item .line-total b{color:var(--terra);font-size:15px}
+.aisle-empty{padding:18px;color:var(--mut);font-size:14px}
+/* ---------- my list ---------- */
+.list-card{padding:20px}
+.list-head{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.list-head h3{font-size:21px}
+.list-head .count{margin-left:auto;font-size:13px;font-weight:700;color:var(--mut)}
+.list-group{margin-top:14px}
+.list-group h4{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--bronze);margin:16px 0 4px}
+.lrow{display:flex;gap:10px;align-items:center;padding:11px 2px;border-top:1px solid var(--line);cursor:pointer}
+.lrow input{accent-color:var(--terra);width:19px;height:19px;flex:none}
+.lrow .ln{flex:1;min-width:0}
+.lrow .ln b{font-size:14.5px;display:block}
+.lrow .ln span{font-size:12.5px;color:var(--mut)}
+.lrow .lp{font-family:Fraunces,serif;font-weight:700;font-size:16px;white-space:nowrap}
+.lrow.bought .ln b,.lrow.bought .ln span{text-decoration:line-through;color:var(--mut)}
+.lrow.bought .lp{color:var(--mut)}
+.list-foot{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px;border-top:1px solid var(--line);padding-top:16px}
+.list-foot .total{font-family:Fraunces,serif;font-size:24px;font-weight:700}
+.list-foot .total small{font-size:13px;font-family:Inter,sans-serif;font-weight:600;color:var(--mut)}
+/* ---------- custom item form ---------- */
+.custom{margin-top:16px;background:var(--paper);border:1px dashed #cbb894;border-radius:14px;padding:16px}
+.custom h4{font-size:16px}
+.custom p{font-size:13px;color:var(--mut);margin-top:2px}
+.custom .form-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:10px;margin-top:12px}
+.custom label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);display:block;margin-bottom:5px}
