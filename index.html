@@ -710,3 +710,46 @@ function itemCardHTML(it){
   var p=priceOf(it,state.store),best=cheapestStoreFor(it);
   var bestTxt=best===state.store?'Cheapest here':('Best price: '+storeById(best).name+' '+inr(priceOf(it,best)));
   return '<div class="item'+(it.qty>0?' in-list':'')+'" role="button" tabindex="0" data-id="'+it.id+'">'
+    +'<h4>'+esc(it.name)+'</h4><div class="u">per '+esc(it.unit)+' · '+esc(aisleById(it.aisle).name)+'</div>'
+    +'<div class="price">'+inr(p)+' <small>/ '+esc(it.unit)+'</small></div>'
+    +'<div class="best'+(best===state.store?'':' other')+'">'+esc(bestTxt)+'</div>'
+    +'<span class="stepper" role="group" aria-label="Quantity for '+esc(it.name)+'">'
+    +'<button type="button" class="qty-minus" data-id="'+it.id+'" aria-label="Less '+esc(it.name)+'">−</button>'
+    +'<span class="q">'+fmtQty(it.qty)+' <small>'+esc(it.unit)+(it.qty>0?' in basket':'')+'</small></span>'
+    +'<button type="button" class="qty-plus" data-id="'+it.id+'" aria-label="More '+esc(it.name)+'">+</button></span>'
+    +(it.qty>0?'<span class="line-total">'+fmtQty(it.qty)+' '+esc(it.unit)+' = <b>'+inr(lineTotal(it,state.store))+'</b></span>':'<span class="line-total">Not in your basket yet</span>')
+    +'</div>';
+}
+function renderAisles(){
+  var box=$('#aisleSections');
+  var q=searchQ.trim().toLowerCase();
+  var shown=0;
+  box.innerHTML=AISLES.map(function(a){
+    var items=state.items.filter(function(it){return it.aisle===a.id&&(!q||it.name.toLowerCase().indexOf(q)!==-1)});
+    shown+=items.length;
+    var inBasket=items.filter(function(it){return it.qty>0}).length;
+    return '<div class="aisle" data-aisle="'+a.id+'"><div class="aisle-head"><h3>'+esc(a.name)+'</h3><span class="a-tag">'+esc(a.tag)+'</span><span class="a-count">'+inBasket+' of '+items.length+' in basket</span></div>'
+      +(items.length?'<div class="rail">'+items.map(itemCardHTML).join('')+'</div>':'<div class="aisle-empty">Nothing in this aisle matches "'+esc(searchQ)+'".</div>')
+      +'</div>';
+  }).join('');
+  var ac=$('#aisleCount');if(ac)ac.textContent=shown+' of '+state.items.length+' items · 6 aisles';
+  $$('#aisleSections .qty-plus').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();changeQty(b.getAttribute('data-id'),1)})});
+  $$('#aisleSections .qty-minus').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();changeQty(b.getAttribute('data-id'),-1)})});
+  $$('#aisleSections .item').forEach(function(b){b.addEventListener('click',function(){openItem(b.getAttribute('data-id'))})});
+}
+function changeQty(id,dir){
+  var it=itemById(id);if(!it)return;
+  var step=it.step||1;
+  var nq=Math.round((it.qty+dir*step)*100)/100;
+  if(nq<0)nq=0;
+  it.qty=nq;
+  if(it.qty===0&&state.bought[id])delete state.bought[id];
+  save();renderAll();
+}
+function renderMyList(){
+  var box=$('#myList');
+  var items=basketItems();
+  var boughtN=items.filter(function(it){return state.bought[it.id]}).length;
+  $('#boughtCount').textContent=boughtN+' of '+items.length+' bought';
+  if(!items.length){box.innerHTML='<p class="muted" style="padding:14px 2px">Your list is empty — add items from the aisles above, or use "Add your own item" below.</p>'}
+  else{
